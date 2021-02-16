@@ -1,0 +1,230 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Requirements &#8212; star_wars 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Star_wars’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="requirements">
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Python 3.8.1</li>
+<li>Django 3.1.2</li>
+<li>Django-REST-Framework 3.12.2</li>
+<li>djangorestframework-datatables 0.6.0</li>
+</ul>
+</div>
+<div class="section" id="installation-on-linux-ubuntu-18-04">
+<h1>Installation on Linux-Ubuntu 18.04<a class="headerlink" href="#installation-on-linux-ubuntu-18-04" title="Permalink to this headline">¶</a></h1>
+<p>First we will create a virtual environment to isolate resources using virtualenv.
+To use the virtual environment install virtualenv, as a requirement you must have pip installed.</p>
+<div class="section" id="setting-the-enviroment">
+<h2>Setting the enviroment<a class="headerlink" href="#setting-the-enviroment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-pip">
+<h3>Installing Pip<a class="headerlink" href="#installing-pip" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">sudo apt-get install python3-pip</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-virtualenv">
+<h3>Installing virtualenv<a class="headerlink" href="#installing-virtualenv" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python3 -m pip install virtualenv</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-and-activate-the-virtual-enviroment">
+<h3>Create and activate the virtual enviroment<a class="headerlink" href="#create-and-activate-the-virtual-enviroment" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">virtualenv sw-env -p python3</span>
+<span class="go">source sw-env/bin/activate</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="starting-the-project">
+<h2>Starting the project<a class="headerlink" href="#starting-the-project" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="installing-project-s-requirements">
+<h3>Installing Project’s requirements<a class="headerlink" href="#installing-project-s-requirements" title="Permalink to this headline">¶</a></h3>
+<p>Within the root of the star_wars project run:
+.. code-block:: console</p>
+<blockquote>
+<div>pip3 install -r requirements.txt</div></blockquote>
+</div>
+<div class="section" id="running-migrations">
+<h3>Running migrations<a class="headerlink" href="#running-migrations" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python manage.py migrate --run-syncdb</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-server">
+<h3>Running Server<a class="headerlink" href="#running-server" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python manage.py runserver 0.0.0.0:8000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="structure-endpoints">
+<h2>Structure (Endpoints)<a class="headerlink" href="#structure-endpoints" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="14%" />
+<col width="14%" />
+<col width="16%" />
+<col width="18%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Endpoint</th>
+<th class="head">HTTP Method</th>
+<th class="head">CRUD Method</th>
+<th class="head">Result</th>
+<th class="head">Authentication
+is required</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/register/</td>
+<td>POST</td>
+<td>Write</td>
+<td>Create a new
+user</td>
+<td>No</td>
+</tr>
+<tr class="row-odd"><td>/auth/login/</td>
+<td>POST</td>
+<td>Read</td>
+<td>Login user</td>
+<td>No</td>
+</tr>
+<tr class="row-even"><td>/tasks/</td>
+<td>GET</td>
+<td>Read</td>
+<td>List user’s
+tasks</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>/tasks/</td>
+<td>POST</td>
+<td>Create</td>
+<td>Create a new
+task</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>/api/tasks/$id/</td>
+<td>PUT</td>
+<td>Update</td>
+<td>Update task</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>/api/tasks/$id/</td>
+<td>DELETE</td>
+<td>Delete</td>
+<td>Delete task</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="tests">
+<h1>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="running-tests">
+<h2>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>In order to run the tests you have run</p>
+<div class="highlight-console"><div class="highlight"><pre><span></span><span class="go">python manage.py test</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Star_wars’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#installation-on-linux-ubuntu-18-04">Installation on Linux-Ubuntu 18.04</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-the-enviroment">Setting the enviroment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#starting-the-project">Starting the project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure-endpoints">Structure (Endpoints)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests">Running tests</a></li>
+</ul>
+</li>
+</ul>
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Lucas Tolosa.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.7</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="_sources/requirements.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

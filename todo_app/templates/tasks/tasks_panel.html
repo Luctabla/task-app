@@ -1,0 +1,16 @@
+{% extends "rest_framework/base.html" %}
+{% load static %}
+
+{% block script %}
+    {#    Prevent Multiple versions of jQuery library from being loaded.#}
+{% endblock %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+{% block branding %}
+    <span><a class='navbar-brand' rel="nofollow" href="{% url 'tasks' %}"></a></span>
+{% endblock %}
+{% load rest_framework %}
+{% block breadcrumbs %}
+{% endblock %}
+{% block content %}
+    {% include 'tasks/datatable.html' %}
+{% endblock %}

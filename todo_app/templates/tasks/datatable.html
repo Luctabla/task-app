@@ -1,0 +1,177 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Rolling Stone Top 500 albums of all time</title>
+    <meta name="description"
+          content="ToDo APP.">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="datatables" class="table table-striped table-bordered" style="width:100%" data-server-side="true"
+                   data-ajax="/api/tasks/?format=datatables">
+                <thead>
+                <tr>
+                    <th data-data="id" data-name="id">Task ID</th>
+                    <th data-data="description">Description</th>
+                    <th data-data="owner" data-name="owner.username">Owner</th>
+                    <th data-data="null" data-name="null">
+                        <button type="button" class="btn btn-info">Edit</button> &nbsp;&nbsp
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    {% load rest_framework %}
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="update-form" role="form">
+                        <div class="form-group">
+                            <label for="task"><span class="glyphicon glyphicon-pencil"></span> Task description</label>
+                            <input type="text" class="form-control" id="description" name="description"
+                                   placeholder="Enter Description"
+                                   required="true">
+                        </div>
+                        <input type="hidden" id="type" name="type" value="">
+                        <button type="submit" class="btn btn-success btn-block"><span
+                                class="glyphicon glyphicon-ok"></span> OK
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Modal -->
+    <div class="modal fade" id="confirm" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card" style="margin-top: 20px">
+        <div class="card-body">
+            <div class="col-3">
+                <h3 class="title-custom">New Task</h3>
+                <form id="create-form" action="{% url 'tasks' %}" method="POST">
+                    {% csrf_token %}
+                    {% render_form serializer %}
+                    <input id="submit-create" class="btn btn-primary" style="width: 100px" type="submit"
+                           value="Create new">
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        function drop_buttons_first_row() {
+            $('#datatables').children().children().children()[3].hidden = true
+        };
+        drop_buttons_first_row()
+        let table = $('#datatables').DataTable(
+            {
+                "columns": [
+                    {"data": "id"},
+                    {"data": "description"},
+                    {"data-data": "owner.username"},
+                    {
+                        "data-data": null,
+                        "defaultContent": '<button type="button" class="btn btn-info">Edit</button>' + '&nbsp;&nbsp' +
+                            '<button type="button" class="btn btn-danger">Delete</button>'
+                    },
+                ]
+            }
+        );
+        let id = 0;
+
+        $('#datatables tbody').on('click', 'button', function () {
+            let data = table.row($(this).parents('tr')).data();
+            let class_name = $(this).attr('class');
+            if (class_name == 'btn btn-info') {
+                // EDIT button
+                let input = $('#update-form input').filter("input[name='description']")
+                input.val(data.description);
+                $('#update-form').val(data['singer']);
+                $('#type').val('edit');
+
+                $('#modal_title').text('EDIT');
+                $('#myModal').modal('show')
+            } else {
+                // DELETE button
+                $('#modal_title').text('DELETE');
+                $("#confirm").modal();
+            }
+
+            id = data['id'];
+
+        });
+
+        $('#update-form').on('submit', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            let $this = $(this);
+            let type = $('#type').val();
+            let method = '';
+            let url = '/api/tasks/';
+            url = url + id + '/';
+            method = 'PUT';
+            $.ajax({
+                url: url,
+                method: method,
+                data: $this.serialize(),
+                headers:
+                    {'X-CSRFToken': '{{ csrf_token }}'},
+            }).success(function (data, textStatus, jqXHR) {
+                window.location.href = window.location.href
+            }).error(function (jqXHR) {
+                console.log(jqXHR)
+            });
+        });
+        $('#confirm').on('click', '#delete', function (e) {
+            $.ajax({
+                url: '/api/tasks/' + id + '/',
+                method: 'DELETE',
+                headers:
+                    {'X-CSRFToken': '{{ csrf_token }}'},
+            }).success(function () {
+                window.location.href = window.location.href
+            }).error(function (jqXHR) {
+                console.log(jqXHR)
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
