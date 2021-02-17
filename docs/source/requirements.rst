@@ -39,7 +39,7 @@ Starting the project
 
 Installing Project's requirements
 ---------------------------------
-Within the root of the star_wars project run:
+Within the project's root run:
 .. code-block:: console
    
    pip3 install -r requirements.txt
